@@ -3,7 +3,7 @@
 
 Controller::Controller()
 {
-    Init();
+    this->Init();
 }
 
 Controller::~Controller()
@@ -18,8 +18,7 @@ void Controller::Init()
     viewPortInPhysicalWidth = 15;
     screenWidth = 960;
     screenHeight = 960;
-    map = map();
-    map.mario.renderer.SetRenderColor(1, 0, 0, 1);
+    map.mario.renderer.SetRenderColor(1, 1, 0, 1);
     for (SMBbase &b : map.blocks)
     {
         b.renderer.SetRenderColor(0, 0, 0, 1);
@@ -65,25 +64,30 @@ void Controller::RunOneStep(double timeDiff)
     {
     }
     timePassed += timeDiff;
+    map.RunOneStep(timeDiff);
 }
 
 void Controller::Draw()
 {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     float xmin, ymin, xmax, ymax;
     // mario
     xmin = W2VXRatio(map.mario.x) * screenWidth;
-    ymin = W2VXRatio(map.mario.y + map.mario.height) * screenHeight;
+    ymin = W2VYRatio(map.mario.y + map.mario.height) * screenHeight;
     xmax = W2VXRatio(map.mario.x + map.mario.width) * screenWidth;
-    ymax = W2VXRatio(map.mario.y) * screenHeight;
+    ymax = W2VYRatio(map.mario.y) * screenHeight;
     map.mario.renderer.DrawSimple(xmin, ymin, xmax, ymax);
+    printf("mario: %f, %f, %f, %f\n", xmin, ymin, xmax, ymax);
     for (SMBbase &w : map.blocks)
     {
         xmin = W2VXRatio(w.x) * screenWidth;
-        ymin = W2VXRatio(w.y + w.height) * screenHeight;
+        ymin = W2VYRatio(w.y + w.height) * screenHeight;
         xmax = W2VXRatio(w.x + w.width) * screenWidth;
-        ymax = W2VXRatio(w.y) * screenHeight;
+        ymax = W2VYRatio(w.y) * screenHeight;
         w.renderer.DrawSimple(xmin, ymin, xmax, ymax);
+        printf("block: %f, %f, %f, %f\n", xmin, ymin, xmax, ymax);
     }
+    FsSwapBuffers();
 }
 
 float Controller::W2VXRatio(float worldx) const

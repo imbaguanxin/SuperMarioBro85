@@ -30,6 +30,6 @@ public:
 
     void UpdateViewPortWithMario();
     void PassViewPortToMap();
-}
+};
 
 #endif

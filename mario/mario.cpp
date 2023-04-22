@@ -13,7 +13,7 @@ Mario::Mario(float x, float y, float width, float height,
     this->myId = SMBbase::objectId::MARIO;
 }
 
-Mario::Init()
+void Mario::Init()
 {
     Moveable();
     this->myId = SMBbase::objectId::MARIO;
@@ -22,6 +22,7 @@ Mario::Init()
 
 void Mario::AccRight(double timeDiff)
 {
+    printf("received acc right\n");
     if (currentCanDash)
     {
         if (vx < MAX_DASHING_VX)
@@ -38,6 +39,7 @@ void Mario::AccRight(double timeDiff)
             currentVhasChanged = true;
         }
     }
+    printf("current vx: %f\n", vx);
 }
 
 void Mario::AccLeft(double timeDiff)
@@ -62,16 +64,18 @@ void Mario::AccLeft(double timeDiff)
 
 void Mario::Jump(double timeDiff)
 {
+    printf("Receive Jump command\n");
     if (currentLocStatus == Mario::marioLocStatus::ON_GROUND)
     {
         vy += JUMP_ACC_Y * float(timeDiff);
+        y += 3 * EPSILON;
         currentLocStatus = Mario::marioLocStatus::ON_AIR;
         timeSinceLastStatusChange = 0;
         currentVhasChanged = true;
     }
     else
     {
-        if (timeSinceLastStatusChange < 200) // 200 ms
+        if (timeSinceLastStatusChange < 0.3) // 200 ms
         {
             vy += JUMP_ACC_Y * float(timeDiff);
             vy = std::min(vy, MAX_VY);
@@ -82,12 +86,6 @@ void Mario::Jump(double timeDiff)
 
 void Mario::NoInput(double timeDiff)
 {
-    if (currentLocStatus == marioLocStatus::ON_AIR)
-    {
-        vy -= GRAVITY * float(timeDiff);
-        vy = std::max(vy, -MAX_VY);
-    }
-
     if (vx > EPSILON)
     {
         vx = std::max(0.0f, vx - NO_INPUT_DEACC_X * float(timeDiff));
@@ -102,15 +100,32 @@ void Mario::NoInput(double timeDiff)
     }
 }
 
-void Mario::MoveByTime(float timeDiff)
+void Mario::ApplyGravity(double timeDiff)
 {
-    if (currentVhasChanged)
+    vy -= GRAVITY * float(timeDiff);
+    vy = std::max(vy, -MAX_VY);
+    vy = std::min(vy, MAX_VY);
+}
+
+void Mario::MoveByTime(double timeDiff)
+{
+    if (!currentVhasChanged)
     {
         NoInput(timeDiff);
+        printf("no input\n");
     }
     currentVhasChanged = false;
+
+    if (currentLocStatus == marioLocStatus::ON_AIR)
+    {
+        ApplyGravity(timeDiff);
+    }
+
     x += vx * float(timeDiff);
     y += vy * float(timeDiff);
+    printf("mario x, y, vx, vy: %f, %f, %f, %f\n", x, y, vx, vy);
+    printf("mario loc status: %d, is running: %d, can dash: %d\n", currentLocStatus, currentIsRunning, currentCanDash);
+    timeSinceLastStatusChange += timeDiff;
 }
 
 void Mario::CollisionUpdateSelf(SMBbase &other, char collisionResult, double timeDiff)
@@ -119,13 +134,15 @@ void Mario::CollisionUpdateSelf(SMBbase &other, char collisionResult, double tim
     {
         return;
     }
+    hitResultAccumulator |= collisionResult;
     switch (other.myId)
     {
     case SMBbase::objectId::BLOCK:
+
         if (IsUpHit(collisionResult))
         {
             printf("Mario up hit\n");
-            y = other.y - height;
+            y = other.y - height - EPSILON;
             if (vy > 0)
             {
                 vy = 0;
@@ -155,8 +172,9 @@ void Mario::CollisionUpdateSelf(SMBbase &other, char collisionResult, double tim
             }
             else
             {
+                this->currentLocStatus = marioLocStatus::ON_GROUND;
                 vy = 0;
-                y = other.y + other.height * 0.99;
+                y = other.y + other.height - EPSILON;
             }
         }
         if (IsRightHit(collisionResult))
@@ -176,5 +194,18 @@ void Mario::CollisionUpdateSelf(SMBbase &other, char collisionResult, double tim
             }
         }
         break;
+    }
+}
+
+void Mario::CollisionCheckStart()
+{
+    hitResultAccumulator = 0;
+}
+
+void Mario::CollisionCheckEnd()
+{
+    if (!IsDownHit(hitResultAccumulator))
+    {
+        currentLocStatus = marioLocStatus::ON_AIR;
     }
 }

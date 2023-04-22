@@ -32,8 +32,9 @@ void Moveable::SetVY(float vy)
     this->vy = vy;
 }
 
-void Moveable::MoveByTime(float timeDiff)
-{
+void Moveable::MoveByTime(double timeDiff)
+{   
+    printf("Warning, used base case movebytime!\n");
     x += vx * timeDiff;
     y += vy * timeDiff;
     timeSinceLastStatusChange += timeDiff;
