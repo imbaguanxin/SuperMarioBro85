@@ -11,3 +11,6 @@ add_subdirectory(../MMLPlayer/mmlplayer ${CMAKE_BINARY_DIR}/mmlplayer)
 
 add_subdirectory(texture)
 add_subdirectory(base)
+add_subdirectory(mario)
+add_subdirectory(map)
+add_subdirectory(controlLayer)

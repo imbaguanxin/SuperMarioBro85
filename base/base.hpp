@@ -28,7 +28,7 @@ class SMBbase
      * the bbxRatio is adjusting the thickness of the bounding box
      */
 public:
-    enum
+    enum objectId
     {
         MARIO = 0,
         GOOMBA = 1,
@@ -51,7 +51,7 @@ public:
     // if no hit: all bits are 0
     char CheckCollision(SMBbase &other);
     char InverseCollision(char collisionResult);
-    virtual void CollisionUpdate(SMBbase &other, char collisionResult, double timeDiff);
+    virtual void CollisionUpdateSelf(SMBbase &other, char collisionResult, double timeDiff);
 
     bool IsNoHit(char collisionResult);
     bool IsLeftHit(char collisionResult);

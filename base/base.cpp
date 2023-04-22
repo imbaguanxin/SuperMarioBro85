@@ -134,7 +134,7 @@ char SMBbase::InverseCollision(char collisionResult)
     return leftup | rightdown;
 }
 
-void SMBbase::CollisionUpdate(SMBbase &other, char collisionResult, double timeDiff)
+void SMBbase::CollisionUpdateSelf(SMBbase &other, char collisionResult, double timeDiff)
 {
     return;
 }

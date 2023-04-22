@@ -14,7 +14,7 @@ add_executable(textureDemo MACOSX_BUNDLE texturedemo.cpp)
 target_link_libraries(textureDemo libTexture)
 
 add_executable(textureTest MACOSX_BUNDLE texturetest.cpp)
-target_link_libraries(texTest libTexture)
+target_link_libraries(textureTest libTexture)
 
 enable_testing()
 add_test(NAME textureTest COMMAND textureTest)

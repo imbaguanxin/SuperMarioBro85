@@ -94,5 +94,13 @@ int main()
     CollisionResultTestInversed(0b0010, 0b0001);
     CollisionResultTestInversed(0b0100, 0b1000);
     CollisionResultTestInversed(0b1000, 0b0100);
+
+    SMBbase test;
+    printf("test id: %d\n", test.myId);
+    test.myId = SMBbase::objectId::BLOCK;
+    if (test.myId == SMBbase::objectId::BLOCK)
+    {
+        printf("change success! id: %d\n", test.myId);
+    }
     return 0;
 }

@@ -36,4 +36,5 @@ void Moveable::MoveByTime(float timeDiff)
 {
     x += vx * timeDiff;
     y += vy * timeDiff;
+    timeSinceLastStatusChange += timeDiff;
 }

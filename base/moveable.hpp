@@ -2,15 +2,16 @@
 #define MOVEABLE_IS_INCLUDED
 
 #include "base.hpp"
-class Moveable : SMBbase
+class Moveable : public SMBbase 
 {
 public:
-    float vx, vy;
+    double timeSinceLastStatusChange = 0;
+    float vx = 0, vy = 0;
     Moveable();
     Moveable(float x, float y, float width, float height, float bbxRatio, float vx, float vy);
     void SetV(float vx, float vy);
     void SetVX(float vx);
     void SetVY(float vy);
-    void MoveByTime(float timeDiff);
+    virtual void MoveByTime(float timeDiff);
 };
 #endif
