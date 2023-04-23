@@ -2,14 +2,21 @@
 
 SMBbase::SMBbase()
 {
-    SetBBX(0, 0, 0, 0);
-    SetBBXRatio(0.1);
+    SMBbase::Init();
 }
 
-SMBbase::SMBbase(float x, float y, float width, float height, float bbxRatio)
+void SMBbase::Init()
+{
+    SetBBX(0, 0, 0, 0);
+    SetBBXRatio(0.1);
+    SetMyId(SMBbase::objectId::UNKNOWN);
+}
+
+SMBbase::SMBbase(float x, float y, float width, float height, float bbxRatio, int myId)
 {
     SetBBX(x, y, width, height);
     SetBBXRatio(bbxRatio);
+    SetMyId(myId);
 }
 
 void SMBbase::SetBBX(float x, float y, float width, float height)
@@ -23,6 +30,11 @@ void SMBbase::SetBBX(float x, float y, float width, float height)
 void SMBbase::SetBBXRatio(float bbxRatio)
 {
     this->bbxRatio = bbxRatio;
+}
+
+void SMBbase::SetMyId(int id)
+{
+    myId = id;
 }
 
 char SMBbase::CheckCollision(SMBbase &other)

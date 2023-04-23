@@ -30,6 +30,7 @@ class SMBbase
 public:
     enum objectId
     {
+        UNKNOWN = -1,
         MARIO = 0,
         GOOMBA = 1,
         COIN = 2,
@@ -38,14 +39,17 @@ public:
         STAR = 5,
     };
     // const float epsilon = 0.0001;
-    float x, y, width, height;
+    float x = 0, y = 0, width = 0, height = 0;
     float bbxRatio = 0.1;
     Renderable renderer;
-    int myId;
+    int myId = -1;
     SMBbase();
-    SMBbase(float x, float y, float width, float height, float bbxRatio);
+    SMBbase(float x, float y, float width, float height, float bbxRatio, int myId);
+    virtual void Init();
     void SetBBX(float x, float y, float width, float height);
     void SetBBXRatio(float bbxRatio);
+    void SetMyId(int id);
+
     // char has 4 bits:    1    1     1    1
     //                   left right  up   down
     // if no hit: all bits are 0

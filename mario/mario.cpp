@@ -3,21 +3,20 @@
 
 Mario::Mario()
 {
-    Init();
+    Mario::Init();
+}
+
+void Mario::Init()
+{
+    Moveable::Init();
+    this->myId = SMBbase::objectId::MARIO;
+    SetBBX(5.0, 2.0, 1.0, 1.0);
 }
 
 Mario::Mario(float x, float y, float width, float height,
              float bbxRatio, float vx, float vy)
 {
-    Moveable(x, y, width, height, bbxRatio, vx, vy);
-    this->myId = SMBbase::objectId::MARIO;
-}
-
-void Mario::Init()
-{
-    Moveable();
-    this->myId = SMBbase::objectId::MARIO;
-    SetBBX(5.0, 2.0, 1.0, 1.0);
+    Moveable(x, y, width, height, bbxRatio, SMBbase::objectId::MARIO, vx, vy);
 }
 
 void Mario::AccRight(double timeDiff)
@@ -28,7 +27,7 @@ void Mario::AccRight(double timeDiff)
         if (vx < MAX_DASHING_VX)
         {
             vx = std::min(MAX_DASHING_VX, vx + DASHING_ACC_X * float(timeDiff));
-            currentVhasChanged = true;
+            // currentVxHasChanged = true;
         }
     }
     else
@@ -36,9 +35,10 @@ void Mario::AccRight(double timeDiff)
         if (vx < MAX_WALKING_VX)
         {
             vx = std::min(MAX_WALKING_VX, vx + WALKING_ACC_X * float(timeDiff));
-            currentVhasChanged = true;
+            // currentVxHasChanged = true;
         }
     }
+    currentVxHasChanged = true;
     printf("current vx: %f\n", vx);
 }
 
@@ -49,7 +49,7 @@ void Mario::AccLeft(double timeDiff)
         if (vx > -MAX_DASHING_VX)
         {
             vx = std::max(-MAX_DASHING_VX, vx - DASHING_ACC_X * float(timeDiff));
-            currentVhasChanged = true;
+            // currentVxHasChanged = true;
         }
     }
     else
@@ -57,9 +57,10 @@ void Mario::AccLeft(double timeDiff)
         if (vx > -MAX_WALKING_VX)
         {
             vx = std::max(-MAX_WALKING_VX, vx - WALKING_ACC_X * float(timeDiff));
-            currentVhasChanged = true;
+            // currentVxHasChanged = true;
         }
     }
+    currentVxHasChanged = true;
 }
 
 void Mario::Jump(double timeDiff)
@@ -71,15 +72,15 @@ void Mario::Jump(double timeDiff)
         y += 3 * EPSILON;
         currentLocStatus = Mario::marioLocStatus::ON_AIR;
         timeSinceLastStatusChange = 0;
-        currentVhasChanged = true;
+        // currentVxHasChanged = true;
     }
     else
     {
-        if (timeSinceLastStatusChange < 0.3) // 200 ms
+        if (timeSinceLastStatusChange < JUMP_TOLERANCE_SEC)
         {
             vy += JUMP_ACC_Y * float(timeDiff);
             vy = std::min(vy, MAX_VY);
-            currentVhasChanged = true;
+            // currentVxHasChanged = true;
         }
     }
 }
@@ -108,13 +109,14 @@ void Mario::ApplyGravity(double timeDiff)
 }
 
 void Mario::MoveByTime(double timeDiff)
-{
-    if (!currentVhasChanged)
+{   
+    // 
+    if (!currentVxHasChanged)
     {
         NoInput(timeDiff);
         printf("no input\n");
     }
-    currentVhasChanged = false;
+    currentVxHasChanged = false;
 
     if (currentLocStatus == marioLocStatus::ON_AIR)
     {
@@ -158,7 +160,7 @@ void Mario::CollisionUpdateSelf(SMBbase &other, char collisionResult, double tim
                     if (vx < EPSILON || vx > -EPSILON)
                     {
                         this->currentIsRunning = false;
-                        this->timeSinceLastStatusChange = 0;
+                        ClearTimer();
                     }
                 }
                 else
@@ -166,7 +168,7 @@ void Mario::CollisionUpdateSelf(SMBbase &other, char collisionResult, double tim
                     if (vx > EPSILON || vx < -EPSILON)
                     {
                         this->currentIsRunning = true;
-                        this->timeSinceLastStatusChange = 0;
+                        ClearTimer();
                     }
                 }
             }
@@ -206,6 +208,10 @@ void Mario::CollisionCheckEnd()
 {
     if (!IsDownHit(hitResultAccumulator))
     {
-        currentLocStatus = marioLocStatus::ON_AIR;
+        if (currentLocStatus != marioLocStatus::ON_AIR)
+        {
+            currentLocStatus = marioLocStatus::ON_AIR;
+            ClearTimer();
+        }
     }
 }
