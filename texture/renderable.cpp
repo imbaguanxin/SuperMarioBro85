@@ -65,14 +65,17 @@ void Renderable::AddRenderState(int stateId, TextureCoord texCoord)
 {
     state2texture[stateId] = texCoord;
 }
+
 void Renderable::SetRenderState(int newState)
 {
     currState = newState;
 }
+
 void Renderable::SetRenderTextureId(int texId)
 {
     textureId = texId;
 }
+
 void Renderable::SetRenderColor(float r, float g, float b, float a)
 {
     color[0] = r;
@@ -80,10 +83,17 @@ void Renderable::SetRenderColor(float r, float g, float b, float a)
     color[2] = b;
     color[3] = a;
 }
+
 void Renderable::SetRenderVisible(bool isVisible)
 {
     visible = isVisible;
 }
+
+void Renderable::SetRenderIsFlip(bool isFlip)
+{
+    this->isFlip = isFlip;
+}
+
 int Renderable::GetRenderState() const
 {
     return currState;
@@ -115,17 +125,36 @@ void Renderable::Draw(float xmin, float ymin, float xmax, float ymax)
     TextureCoord &tc = state2texture[currState];
     glBegin(GL_QUADS);
     glColor4f(color[0], color[1], color[2], color[3]);
-    glTexCoord2f(tc.TLX(), tc.TLY()); // top left
-    glVertex2f(xmin, ymin);
+    if (isFlip)
+    {
+        // top left
+        glTexCoord2f(tc.TRX(), tc.TRY()); // texture top right
+        glVertex2f(xmin, ymin);
+        // top right
+        glTexCoord2f(tc.TLX(), tc.TLY()); // texture top left
+        glVertex2f(xmax, ymin);
+        // bottom right
+        glTexCoord2f(tc.BLX(), tc.BLY()); // texture bottom left
+        glVertex2f(xmax, ymax);
+        // bottom left
+        glTexCoord2f(tc.BRX(), tc.BRY()); // texture bottom right
+        glVertex2f(xmin, ymax);
+    }
+    else
+    {
+        glTexCoord2f(tc.TLX(), tc.TLY()); // top left
+        glVertex2f(xmin, ymin);
 
-    glTexCoord2f(tc.TRX(), tc.TRY()); // top right
-    glVertex2f(xmax, ymin);
+        glTexCoord2f(tc.TRX(), tc.TRY()); // top right
+        glVertex2f(xmax, ymin);
 
-    glTexCoord2f(tc.BRX(), tc.BRY()); // bottom right
-    glVertex2f(xmax, ymax);
+        glTexCoord2f(tc.BRX(), tc.BRY()); // bottom right
+        glVertex2f(xmax, ymax);
 
-    glTexCoord2f(tc.BLX(), tc.BLY()); // bottom left
-    glVertex2f(xmin, ymax);
+        glTexCoord2f(tc.BLX(), tc.BLY()); // bottom left
+        glVertex2f(xmin, ymax);
+    }
+
     glEnd();
 }
 

@@ -9,7 +9,7 @@ class Map
 {
 public:
     std::vector<SMBbase> blocks; // all the blocks that could move
-    
+
     Mario mario;
 
     std::vector<SMBbase> undergrounds; // undergrounds
@@ -28,7 +28,6 @@ public:
     float GetVpY() const;
 
     void Init();
-
     void UpdateViewPortWithMario();
     bool IsInViewPort(SMBbase &obj) const;
     void RestrictMarioX();

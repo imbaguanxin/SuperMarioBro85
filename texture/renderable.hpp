@@ -35,6 +35,7 @@ public:
     int textureId = 1; // the texture id it needs to bind (related to textureData class)
     int currState = 0;
     bool visible = true;
+    bool isFlip = false;
     std::map<int, TextureCoord> state2texture;
     std::vector<float> color;
 
@@ -50,6 +51,7 @@ public:
     void SetRenderTextureId(int texId);
     void SetRenderColor(float r, float g, float b, float a);
     void SetRenderVisible(bool isVisible);
+    void SetRenderIsFlip(bool isFlip);
     int GetRenderState() const;
     int GetRenderTextureId() const;
     std::vector<float> GetRenderColor() const;

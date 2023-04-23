@@ -36,6 +36,9 @@ public:
     const float JUMP_TOLERANCE_SEC = 0.3;
     const float EPSILON = 0.01;
 
+    // rendering parameters
+    
+
     Mario();
     Mario(float x, float y, float width, float height, float bbxRatio, float vx, float vy);
     virtual void Init() override;
@@ -48,6 +51,8 @@ public:
     void CollisionUpdateSelf(SMBbase &other, char collisionResult, double timeDiff) override;
     void CollisionCheckStart();
     void CollisionCheckEnd();
+
+    virtual void ApplyRenderStatus();
 };
 
 #endif

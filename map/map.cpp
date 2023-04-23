@@ -85,6 +85,7 @@ void Map::Collide(double timeDiff)
         mario.CollisionUpdateSelf(b, res, timeDiff);
     }
     mario.CollisionCheckEnd();
+    mario.ApplyRenderStatus();
 }
 
 void Map::MoveOneStep(double timeDiff)
@@ -97,6 +98,7 @@ void Map::RunOneStep(double timeDiff)
     printf("////////////////////////\n");
     Collide(timeDiff);
     MoveOneStep(timeDiff);
+    
     UpdateViewPortWithMario();
     RestrictMarioX();
 }

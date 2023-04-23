@@ -218,3 +218,60 @@ void Mario::CollisionCheckEnd()
         }
     }
 }
+
+void Mario::ApplyRenderStatus()
+{
+    if (currentSizeStatus == Mario::marioSizeStatus::SMALL)
+    {
+        if (currentLocStatus == Mario::marioLocStatus::ON_AIR)
+        {
+            if (vx > 0)
+            {
+                renderer.SetRenderIsFlip(false);
+            }
+            else
+            {
+                renderer.SetRenderIsFlip(true);
+            }
+            renderer.SetRenderState(4);
+        }
+        else if (currentLocStatus == Mario::marioLocStatus::ON_GROUND)
+        {
+            // decide direction
+            if (vx > EPSILON)
+            {
+                renderer.SetRenderIsFlip(false);
+            }
+            else if (vx < -EPSILON)
+            {
+                renderer.SetRenderIsFlip(true);
+            }
+            // decide running
+            if (!currentIsRunning)
+            {
+                renderer.SetRenderState(0);
+                printf("go to standing, vx: %f\n", vx);
+            }
+            else
+            {
+                int runningState = int(timeSinceLastStatusChange / 0.2) % 3;
+                switch (runningState)
+                {
+                case 0:
+                    renderer.SetRenderState(1);
+                    break;
+                case 1:
+                    renderer.SetRenderState(2);
+                    break;
+                case 2:
+                    renderer.SetRenderState(3);
+                    break;
+                }
+            }
+        }
+        else
+        {
+            renderer.SetRenderState(0);
+        }
+    }
+}

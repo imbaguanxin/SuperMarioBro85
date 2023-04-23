@@ -15,6 +15,7 @@ public:
     Controller();
     ~Controller();
     void Init();
+    void InitTexture();
     bool IsTerminated(void) const;
     void RunOneStep(double timeDiff);
     void Draw(void);
