@@ -37,15 +37,14 @@ public:
     const float EPSILON = 0.01;
 
     // rendering parameters
-    
-
+    const float RUNNING_ANIMATION_PERIOD = 0.2;
     Mario();
     Mario(float x, float y, float width, float height, float bbxRatio, float vx, float vy);
     virtual void Init() override;
     void AccRight(double timeDiff);
     void AccLeft(double timeDiff);
     void Jump(double timeDiff);
-    void NoInput(double timeDiff);
+    void NoXInput(double timeDiff);
     void ApplyGravity(double timeDiff);
     virtual void MoveByTime(double timeDiff) override;
     void CollisionUpdateSelf(SMBbase &other, char collisionResult, double timeDiff) override;

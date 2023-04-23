@@ -27,7 +27,6 @@ void Mario::AccRight(double timeDiff)
         if (vx < MAX_DASHING_VX)
         {
             vx = std::min(MAX_DASHING_VX, vx + DASHING_ACC_X * float(timeDiff));
-            // currentVxHasChanged = true;
         }
     }
     else
@@ -35,7 +34,6 @@ void Mario::AccRight(double timeDiff)
         if (vx < MAX_WALKING_VX)
         {
             vx = std::min(MAX_WALKING_VX, vx + WALKING_ACC_X * float(timeDiff));
-            // currentVxHasChanged = true;
         }
     }
     currentVxHasChanged = true;
@@ -49,7 +47,6 @@ void Mario::AccLeft(double timeDiff)
         if (vx > -MAX_DASHING_VX)
         {
             vx = std::max(-MAX_DASHING_VX, vx - DASHING_ACC_X * float(timeDiff));
-            // currentVxHasChanged = true;
         }
     }
     else
@@ -57,7 +54,6 @@ void Mario::AccLeft(double timeDiff)
         if (vx > -MAX_WALKING_VX)
         {
             vx = std::max(-MAX_WALKING_VX, vx - WALKING_ACC_X * float(timeDiff));
-            // currentVxHasChanged = true;
         }
     }
     currentVxHasChanged = true;
@@ -72,7 +68,6 @@ void Mario::Jump(double timeDiff)
         y += 3 * EPSILON;
         currentLocStatus = Mario::marioLocStatus::ON_AIR;
         timeSinceLastStatusChange = 0;
-        // currentVxHasChanged = true;
     }
     else
     {
@@ -80,12 +75,11 @@ void Mario::Jump(double timeDiff)
         {
             vy += JUMP_ACC_Y * float(timeDiff);
             vy = std::min(vy, MAX_VY);
-            // currentVxHasChanged = true;
         }
     }
 }
 
-void Mario::NoInput(double timeDiff)
+void Mario::NoXInput(double timeDiff)
 {
     if (vx > EPSILON)
     {
@@ -113,7 +107,7 @@ void Mario::MoveByTime(double timeDiff)
     //
     if (!currentVxHasChanged)
     {
-        NoInput(timeDiff);
+        NoXInput(timeDiff);
         printf("no input\n");
     }
     currentVxHasChanged = false;
@@ -254,7 +248,7 @@ void Mario::ApplyRenderStatus()
             }
             else
             {
-                int runningState = int(timeSinceLastStatusChange / 0.2) % 3;
+                int runningState = int(timeSinceLastStatusChange / RUNNING_ANIMATION_PERIOD) % 3;
                 switch (runningState)
                 {
                 case 0:
