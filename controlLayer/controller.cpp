@@ -77,6 +77,10 @@ void Controller::InitTexture()
                      GL_UNSIGNED_BYTE,
                      td.decoders[i].rgba);
     }
+
+    // init background renderer
+    bgRenderer.SetTextureId(0); // first texture
+    // init mario renderer
     TextureRegister tr;
     map.mario.renderer.AddRenderState(0, TextureCoord(tr.SMALL_MARIO_STAND));
     map.mario.renderer.AddRenderState(1, TextureCoord(tr.SMALL_MARIO_WALK_0));
@@ -135,8 +139,17 @@ void Controller::Draw()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    float xmin, ymin, xmax, ymax;
+    // draw background
+    float xminProp, yminProp, xmaxProp, ymaxProp;
+    xminProp = map.GetVpX() / map.GetMaxWorldX();
+    yminProp = (map.GetMaxWorldY() - (map.GetVpY() + map.GetVpHeight())) / map.GetMaxWorldY();
+    xmaxProp = (map.GetVpX() + map.GetVpWidth()) / map.GetMaxWorldX();
+    ymaxProp = (map.GetMaxWorldY() - map.GetVpY()) / map.GetMaxWorldY();
+    bgRenderer.SetProp(xminProp, yminProp, xmaxProp, ymaxProp);
+    bgRenderer.Draw(td, screenWidth, screenHeight);
+
     // mario
+    float xmin, ymin, xmax, ymax;
     xmin = W2VXRatio(map.mario.x) * screenWidth;
     ymin = W2VYRatio(map.mario.y + map.mario.height) * screenHeight;
     xmax = W2VXRatio(map.mario.x + map.mario.width) * screenWidth;
@@ -155,8 +168,16 @@ void Controller::Draw()
                w.renderer.color[2], w.renderer.color[3]);
         printf("block: %f, %f, %f, %f\n", xmin, ymin, xmax, ymax);
     }
-    
     FsSwapBuffers();
+}
+
+void Controller::DrawBackground()
+{
+    float xmin, ymin, xmax, ymax;
+    xmin = 0;
+    ymin = 0;
+    xmax = screenWidth;
+    ymax = screenHeight;
 }
 
 float Controller::W2VXRatio(float worldx) const

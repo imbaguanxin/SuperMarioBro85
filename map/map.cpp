@@ -15,7 +15,7 @@ void Map::Init()
     this->viewPortY = 0.0f;
     this->viewPortHeight = 15.0f;
     this->viewPortWidth = 15.0f;
-    this->maxWorldX = 30.0f;
+    this->maxWorldX = 221.0f; // 3376 / 16
     this->maxWorldY = 15.0f;
 }
 
@@ -37,6 +37,16 @@ float Map::GetVpX() const
 float Map::GetVpY() const
 {
     return viewPortY;
+}
+
+float Map::GetMaxWorldX() const
+{
+    return maxWorldX;
+}
+
+float Map::GetMaxWorldY() const
+{
+    return maxWorldY;
 }
 
 void Map::UpdateViewPortWithMario()

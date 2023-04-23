@@ -26,6 +26,8 @@ public:
     float GetVpWidth() const;
     float GetVpX() const;
     float GetVpY() const;
+    float GetMaxWorldX() const;
+    float GetMaxWorldY() const;
 
     void Init();
     void UpdateViewPortWithMario();

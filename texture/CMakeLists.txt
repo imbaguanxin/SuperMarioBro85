@@ -6,7 +6,9 @@ add_library(libTexture
     textureData.cpp
     renderable.hpp
     renderable.cpp
-    textureRegister.h)
+    textureRegister.h
+    backgroundRenderer.hpp
+    backgroundRenderer.cpp)
 target_link_libraries(libTexture fssimplewindow yspng)
 target_include_directories(libTexture PUBLIC .)
 
