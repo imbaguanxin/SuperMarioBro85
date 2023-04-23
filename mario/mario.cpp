@@ -122,7 +122,7 @@ void Mario::MoveByTime(double timeDiff)
     printf("mario x, y, vx, vy: %f, %f, %f, %f\n", x, y, vx, vy);
     printf("mario loc status: %d, is running: %d, can dash: %d\n", currentLocStatus, currentIsRunning, currentCanDash);
     printf("mario status last time %f\n", timeSinceLastStatusChange);
-    timeSinceLastStatusChange += timeDiff;
+    AddToTimer(timeDiff);
 }
 
 void Mario::CollisionUpdateSelf(SMBbase &other, char collisionResult, double timeDiff)

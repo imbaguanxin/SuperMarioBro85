@@ -7,10 +7,9 @@ Moveable::Moveable()
 
 void Moveable::Init()
 {
-    SMBbase::Init();
+    MultiStatus::Init();
     this->vx = 0;
     this->vy = 0;
-    this->timeSinceLastStatusChange = 0;
 }
 
 Moveable::Moveable(float x, float y,
@@ -18,10 +17,9 @@ Moveable::Moveable(float x, float y,
                    float bbxRatio, int myId,
                    float vx, float vy)
 {
-    SMBbase(x, y, width, height, bbxRatio, myId);
+    MultiStatus(x, y, width, height, bbxRatio, myId);
     this->vx = vx;
     this->vy = vy;
-    this->timeSinceLastStatusChange = 0;
 }
 
 void Moveable::SetV(float vx, float vy)
@@ -38,16 +36,6 @@ void Moveable::SetVX(float vx)
 void Moveable::SetVY(float vy)
 {
     this->vy = vy;
-}
-
-void Moveable::ClearTimer()
-{
-    this->timeSinceLastStatusChange = 0;
-}
-
-void Moveable::AddToTimer(double timeDiff)
-{
-    this->timeSinceLastStatusChange += timeDiff;
 }
 
 void Moveable::MoveByTime(double timeDiff)

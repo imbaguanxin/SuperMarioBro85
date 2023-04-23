@@ -1,6 +1,8 @@
 add_library(libBase
     base.hpp
     base.cpp
+    multiStatus.hpp
+    multiStatus.cpp
     moveable.hpp
     moveable.cpp
 )
