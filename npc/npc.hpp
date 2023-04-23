@@ -3,12 +3,13 @@
 
 #include "moveable.hpp"
 #include "mario.hpp"
+
 class NPC : public Moveable
 {
 public:
     NPC();
-    void Init();
-    void CollisionUpdateSelf(SMBbase &other, char collisionResult, double timeDiff) override;
+    virtual void Init();
+    virtual void CollisionUpdateSelf(SMBbase &other, char collisionResult, double timeDiff);
     virtual void CollisionUpdateMario(Mario &other, char collisionResult, double timeDiff);
 };
 

@@ -11,11 +11,7 @@ public:
     double timePassed = 0;
     TextureData td;
     Map map;
-    float viewPortInPhysicalHeight, viewPortInPhysicalWidth;
-    float viewPortInPhysicalX, viewPortInPhysicalY; // left bottom corner
-    float maxWorldX, maxWorldY;
     float screenWidth, screenHeight;
-    std::vector<SMBbase> undergrounds;
     Controller();
     ~Controller();
     void Init();
@@ -25,11 +21,6 @@ public:
 
     float W2VXRatio(float worldx) const;
     float W2VYRatio(float worldy) const;
-
-    bool IsInViewPort(SMBbase &obj) const;
-
-    void UpdateViewPortWithMario();
-    void PassViewPortToMap();
 };
 
 #endif

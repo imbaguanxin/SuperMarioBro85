@@ -9,10 +9,30 @@ class Map
 {
 public:
     std::vector<SMBbase> blocks; // all the blocks that could move
+    
     Mario mario;
+
+    std::vector<SMBbase> undergrounds; // undergrounds
+
+    float viewPortHeight, viewPortWidth;
+    float viewPortX, viewPortY; // left bottom corner
+    float maxWorldX, maxWorldY;
+
+    const float VIEWPORT_MAX_RATIO = 0.6f;
+
     Map();
 
+    float GetVpHeight() const;
+    float GetVpWidth() const;
+    float GetVpX() const;
+    float GetVpY() const;
+
     void Init();
+
+    void UpdateViewPortWithMario();
+    bool IsInViewPort(SMBbase &obj) const;
+    void RestrictMarioX();
+
     void Collide(double timeDiff);
     void MoveOneStep(double timeDiff);
     void RunOneStep(double timeDiff);

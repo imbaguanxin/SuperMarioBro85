@@ -109,8 +109,8 @@ void Mario::ApplyGravity(double timeDiff)
 }
 
 void Mario::MoveByTime(double timeDiff)
-{   
-    // 
+{
+    //
     if (!currentVxHasChanged)
     {
         NoInput(timeDiff);
@@ -127,6 +127,7 @@ void Mario::MoveByTime(double timeDiff)
     y += vy * float(timeDiff);
     printf("mario x, y, vx, vy: %f, %f, %f, %f\n", x, y, vx, vy);
     printf("mario loc status: %d, is running: %d, can dash: %d\n", currentLocStatus, currentIsRunning, currentCanDash);
+    printf("mario status last time %f\n", timeSinceLastStatusChange);
     timeSinceLastStatusChange += timeDiff;
 }
 
@@ -157,9 +158,10 @@ void Mario::CollisionUpdateSelf(SMBbase &other, char collisionResult, double tim
             {
                 if (this->currentIsRunning)
                 {
-                    if (vx < EPSILON || vx > -EPSILON)
+                    if (vx < EPSILON && vx > -EPSILON)
                     {
                         this->currentIsRunning = false;
+                        printf("stop running\n");
                         ClearTimer();
                     }
                 }
@@ -168,6 +170,7 @@ void Mario::CollisionUpdateSelf(SMBbase &other, char collisionResult, double tim
                     if (vx > EPSILON || vx < -EPSILON)
                     {
                         this->currentIsRunning = true;
+                        printf("start running\n");
                         ClearTimer();
                     }
                 }

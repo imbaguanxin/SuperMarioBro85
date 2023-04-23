@@ -16,6 +16,6 @@ int main()
 
         c.RunOneStep(time_interval);
         c.Draw();
-        FsSleep(100);
+        FsSleep(10);
     }
 }

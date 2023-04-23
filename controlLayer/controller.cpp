@@ -12,10 +12,12 @@ Controller::~Controller()
 
 void Controller::Init()
 {
-    viewPortInPhysicalX = 0;
-    viewPortInPhysicalY = 0;
-    viewPortInPhysicalHeight = 15;
-    viewPortInPhysicalWidth = 15;
+    // viewPortInPhysicalX = 0.0f;
+    // viewPortInPhysicalY = 0.0f;
+    // viewPortInPhysicalHeight = 15.0f;
+    // viewPortInPhysicalWidth = 15.0f;
+    // maxWorldX = 30.0f;
+    // maxWorldY = 15.0f;
     screenWidth = 960;
     screenHeight = 960;
     map.mario.renderer.SetRenderColor(1, 1, 0, 1);
@@ -92,54 +94,10 @@ void Controller::Draw()
 
 float Controller::W2VXRatio(float worldx) const
 {
-    return (worldx - viewPortInPhysicalX) / viewPortInPhysicalWidth;
+    return (worldx - map.GetVpX()) / map.GetVpWidth();
 }
 
 float Controller::W2VYRatio(float worldy) const
 {
-    return 1 - ((worldy - viewPortInPhysicalY) / viewPortInPhysicalHeight);
-}
-
-bool Controller::IsInViewPort(SMBbase &obj) const
-{
-    return (obj.x > viewPortInPhysicalX && obj.x < viewPortInPhysicalX + viewPortInPhysicalWidth &&
-            obj.y > viewPortInPhysicalY && obj.y < viewPortInPhysicalY + viewPortInPhysicalHeight) ||
-           (obj.x + obj.width > viewPortInPhysicalX && obj.x + obj.width < viewPortInPhysicalX + viewPortInPhysicalWidth &&
-            obj.y > viewPortInPhysicalY && obj.y < viewPortInPhysicalY + viewPortInPhysicalHeight) ||
-           (obj.x > viewPortInPhysicalX && obj.x < viewPortInPhysicalX + viewPortInPhysicalWidth &&
-            obj.y + obj.height > viewPortInPhysicalY && obj.y + obj.height < viewPortInPhysicalY + viewPortInPhysicalHeight) ||
-           (obj.x + obj.width > viewPortInPhysicalX && obj.x + obj.width < viewPortInPhysicalX + viewPortInPhysicalWidth &&
-            obj.y + obj.height > viewPortInPhysicalY && obj.y + obj.height < viewPortInPhysicalY + viewPortInPhysicalHeight);
-}
-
-void Controller::UpdateViewPortWithMario()
-{
-    float marioPropotion = (map.mario.x - viewPortInPhysicalX) / viewPortInPhysicalWidth;
-    if (marioPropotion > 0.7)
-    {
-        viewPortInPhysicalX = map.mario.x - viewPortInPhysicalWidth * 0.7;
-    }
-    // teleported to underground
-    if (map.mario.y < 0)
-    {
-        for (SMBbase &w : undergrounds)
-        {
-            char collision = map.mario.CheckCollision(w);
-            if (!map.mario.IsNoHit(collision))
-            {
-                viewPortInPhysicalX = w.x;
-                viewPortInPhysicalY = w.y;
-                break;
-            }
-        }
-    }
-    if (viewPortInPhysicalX >= maxWorldX - viewPortInPhysicalWidth)
-    {
-        viewPortInPhysicalX = maxWorldX - viewPortInPhysicalWidth;
-    }
-}
-
-void Controller::PassViewPortToMap()
-{
-    // TODO
+    return 1 - ((worldy - map.GetVpY()) / map.GetVpHeight());
 }
