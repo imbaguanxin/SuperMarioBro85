@@ -38,6 +38,8 @@ public:
 
     // rendering parameters
     const float RUNNING_ANIMATION_PERIOD = 0.2;
+
+
     Mario();
     Mario(float x, float y, float width, float height, float bbxRatio, float vx, float vy);
     virtual void Init() override;
@@ -51,7 +53,7 @@ public:
     void CollisionCheckStart();
     void CollisionCheckEnd();
 
-    virtual void ApplyRenderStatus();
+    virtual void ApplyRenderStatus() override;
 };
 
 #endif

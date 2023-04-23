@@ -150,3 +150,8 @@ void SMBbase::CollisionUpdateSelf(SMBbase &other, char collisionResult, double t
 {
     return;
 }
+
+void SMBbase::ApplyRenderStatus()
+{
+    return;
+}

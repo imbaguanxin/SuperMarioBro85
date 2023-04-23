@@ -56,6 +56,7 @@ public:
     char CheckCollision(SMBbase &other);
     char InverseCollision(char collisionResult);
     virtual void CollisionUpdateSelf(SMBbase &other, char collisionResult, double timeDiff);
+    virtual void ApplyRenderStatus();
 
     bool IsNoHit(char collisionResult);
     bool IsLeftHit(char collisionResult);
